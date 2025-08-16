@@ -15,7 +15,6 @@
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/svelte": "^7.1.0",
     "@iconify-json/mingcute": "^1.2.3",
-    "@tailwindcss/vite": "^4.1.10",
     "animate.css": "^4.1.1",
     "astro": "^5.9.2",
     "astro-icon": "^1.1.5",
