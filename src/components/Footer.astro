@@ -1,0 +1,52 @@
+---
+import { SITE_AUTHOR } from "@/consts";
+import { Statics } from "@/utils/statics";
+
+const today = new Date();
+const firstBlogDate = Statics.firstBlogDate || today;
+const dateDiff = today.getTime() - firstBlogDate.getTime();
+const days = Math.floor(dateDiff / (1000 * 60 * 60 * 24));
+---
+
+<footer class="mt-20">
+  <div class="text-center mb-4 markdown-body">
+    <p>
+      &copy; {today.getFullYear()}
+      {SITE_AUTHOR}. All rights reserved.
+    </p>
+    <p>
+      开业 <span id="BLOG_DAYS" data-first-date={firstBlogDate.getTime()}
+        >{days}</span
+      > 天里，写下了 {Statics.blogCount} 篇博客，{Statics.pagesCount} 篇页面，{
+        Statics.notesCount
+      } 篇杂记，{Statics.totalWords} 字符。
+    </p>
+    <p>
+      Powered by
+      <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+        Astro
+      </a>
+      and
+      <a
+        href="https://github.com/Lhcfl/astro-theme-krypton"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Krypton
+      </a>.
+    </p>
+  </div>
+</footer>
+
+<script>
+  const init = () => {
+    const firstDateElement = document.getElementById("BLOG_DAYS");
+    if (firstDateElement) {
+      const dateDiff = Date.now() - Number(firstDateElement.dataset.firstDate);
+      const days = Math.floor(dateDiff / (1000 * 60 * 60 * 24));
+      firstDateElement.textContent = days.toString();
+    }
+  };
+  init();
+  document.addEventListener("astro:after-swap", init);
+</script>

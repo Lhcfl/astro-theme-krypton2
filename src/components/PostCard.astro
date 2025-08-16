@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostExcerpt from "./PostExcerpt.astro";
+import { render } from "astro:content";
+import PostMeta from "./PostMeta.astro";
+import Clickable from "./Clickable.astro";
+import { blogUrl } from "@/utils/url";
+
+type Props = {
+  post: CollectionEntry<"blog">;
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Clickable
+  is="article"
+  class="post-with-excerpt p-2 md:p-4"
+  un-border="b base-300"
+  aria-label=`Read more about ${post.data.title || 'this article'}`
+  href={blogUrl(post)}
+>
+  <h2 class="post-title" un-m="t-2 b-2" un-text="base md:xl" font-bold>
+    <a class="smooth-underline" href={blogUrl(post)}>
+      {post.data.title || post.data.date.toLocaleDateString()}
+    </a>
+  </h2>
+  <div class="excerpt markdown-body" un-text="sm md:base">
+    <PostExcerpt post={post}>
+      <Content />
+    </PostExcerpt>
+  </div>
+  <PostMeta class="w-full text-base-content/70" post={post} />
+</Clickable>

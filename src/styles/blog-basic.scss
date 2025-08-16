@@ -1,0 +1,263 @@
+// =====================================
+// Color, font and margin
+// =====================================
+@use "./color-defination.scss";
+
+// 思源屏显宋体
+@import url("https://chinese-fonts-cdn.deno.dev/packages/sypxzs/dist/%E6%80%9D%E6%BA%90%E5%B1%8F%E6%98%BE%E8%87%BB%E5%AE%8B/result.css");
+// 霞骛文楷
+@import url("https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Regular/result.css");
+// Noto Serif + 霞骛文楷繁体
+@import url("https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+
+@font-face {
+  font-family: "mononoki";
+  src: url("@/assets/fonts/mononoki-regular.woff2") format("woff2");
+}
+
+:root {
+  --mono-font-face: "mononoki", "Consolas", "Menlo", "Monaco", "Lucida Console",
+    "Courier New", "Courier", monospace;
+  // --normal-font-face: "Open Sans", "Helvetica Neue", Helvetica, Arial,
+  //   sans-serif;
+  --normal-font-face: "Noto Serif", "Source Han Serif CN for Display",
+    "Times New Roman", serif;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--normal-font-face);
+  font-size: 1em;
+}
+
+.markdown-body {
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  &.is-detailed {
+    font-size: 15px;
+  }
+
+  a {
+    @apply text-primary+30;
+    text-decoration: none;
+  }
+
+  p {
+    line-height: 1.9em;
+  }
+
+  [id] {
+    scroll-margin-top: var(--main-pt);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1;
+    margin: 1rem 0;
+    font-weight: bold;
+
+    &,
+    * {
+      color: var(--primary);
+    }
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    line-height: 1.2em;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.2em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  h5 {
+    font-size: 1.1rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  p,
+  ul,
+  ol,
+  dl {
+    margin: 1em 0;
+  }
+
+  ol,
+  ul {
+
+    ol,
+    ul {
+      margin: 0.4em 0;
+    }
+  }
+
+  ul>li {
+    list-style: disc;
+    margin-left: 1.6em;
+    line-height: 1.9em;
+  }
+
+  ol>li {
+    list-style: decimal;
+    margin-left: 1.6em;
+    line-height: 1.9em;
+  }
+
+  hr {
+    border-color: var(--secondary-500);
+  }
+
+  >blockquote {
+    padding: 0 1em 0 2.5em;
+    position: relative;
+
+    &::before {
+      content: "”";
+      /* 引号内容 */
+      font-size: 4em;
+      /* 引号大小 */
+      opacity: 0.4;
+      position: absolute;
+      /* 绝对定位 */
+      top: -0.3rem;
+      /* 向上偏移 */
+      left: 0rem;
+      /* 向左偏移 */
+      line-height: 1;
+      /* 避免引号溢出 */
+    }
+
+    blockquote {
+      border-left: 2px solid var(--color-secondary);
+      padding: 0 0 0 1em;
+    }
+
+    &:not([lang])>*:not(pre) {
+      font-style: italic;
+
+      // language specific styles
+      &[lang="zh"],
+      &[lang="ja"] {
+        font-style: normal;
+        font-family: "LXGW Bright", "LXGW Wenkai TC", "LXGW Wenkai", cursive;
+      }
+    }
+
+    &[lang] {
+      font-style: italic;
+
+      pre {
+        font-style: normal;
+      }
+    }
+
+    &[lang="zh"],
+    &[lang="ja"] {
+      font-style: normal;
+      font-family: "LXGW Bright", "LXGW Wenkai TC", "LXGW Wenkai", cursive;
+    }
+  }
+
+  // blockquote:not([lang="en"]) {
+  //   box-sizing: border-box;
+  //   margin: 1.6em 0 1.6em 0em;
+  //   padding: 0 0 0 1.6em;
+  //   border-left: var(--color-secondary) 0.3em solid;
+  // }
+
+  code,
+  tt {
+    font-family: var(--mono-font-face);
+    white-space: pre-wrap;
+    background-color: var(--color-base-200);
+    padding: 2px 4px;
+  }
+
+  pre {
+    padding: 10px 15px;
+    font-family: var(--mono-font-face);
+    background-color: var(--color-base-200) !important;
+    line-height: 1.4em !important;
+
+    @media screen and (max-width: 768px) {
+      font-size: 0.9em;
+    }
+
+    code {
+      padding: 0;
+      background-color: transparent;
+
+      span {
+        text-decoration: none !important;
+      }
+    }
+
+    &[data-language]::before {
+      position: absolute;
+      content: attr(data-language);
+      right: 2em;
+      opacity: 0.4;
+    }
+  }
+
+  kbd {
+    display: inline-block;
+    padding: 1px 8px;
+    border: var(--primary-200) 1px solid;
+    color: var(--primary-800);
+  }
+
+  details {
+    margin-top: 1em;
+  }
+
+  table {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 1em 0;
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+
+    td,
+    th {
+      border: 1px solid var(--primary-300);
+      padding: 3px 5px;
+    }
+
+    th {
+      text-align: left;
+    }
+  }
+
+  ruby>rt {
+    font-size: 65%;
+  }
+}

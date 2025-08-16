@@ -1,0 +1,39 @@
+---
+import type { RecursiveHeading } from "@/types/toc";
+import Self from "@/components/TocListRec.astro";
+type Props = {
+  data: RecursiveHeading[];
+};
+const { data } = Astro.props;
+---
+
+<ol class="ml-2">
+  {
+    data.map((heading) => (
+      <li class="toc-item">
+        {heading.kind === "heading" ? (
+          <>
+            <p>
+              <a
+                href={`#${heading.slug}`}
+                class="toc-link"
+                data-slug={heading.slug}
+              >
+                {heading.text}
+              </a>
+            </p>
+            {heading.inner.length > 0 && <Self data={heading.inner} />}
+          </>
+        ) : (
+          <p>0</p>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .toc-link.active {
+    font-weight: bold;
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import CardLayout from "@/layouts/CardLayout.astro";
+import { categoryUrl } from "@/utils/url";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+const tags = new Map<string, Map<string, number>>();
+
+for (const post of posts) {
+  const tag = post.data.categories;
+  if (!tag) continue;
+  let firstChar = tag[0].toUpperCase();
+  if (firstChar.match(/[0-9]/)) {
+    firstChar = "#"; // Group numbers under '#'
+  } else if (!firstChar.match(/[A-Z]/)) {
+    firstChar = "Other"; // Group non-alphabetic characters under 'Other'
+  }
+  if (!tags.has(firstChar)) {
+    tags.set(firstChar, new Map());
+  }
+  const tagMap = tags.get(firstChar)!;
+  tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+}
+
+const letters = tags
+  .entries()
+  .toArray()
+  .sort((a, b) => (a < b ? -1 : 1));
+---
+
+<CardLayout title="Categories" description="All categories used in the blog">
+  <div class="categories-list">
+    {
+      letters.map(([letter, set]) => (
+        <>
+          <h1 class="text-2xl font-bold mt-5">{letter}</h1>
+          <div class="categories-container flex flex-wrap gap-2 mt-2">
+            {set
+              .entries()
+              .toArray()
+              .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+              .map(([tag, count]) => (
+                <span class="category-item post-meta-badge">
+                  <a href={categoryUrl(tag)} class="tag-link">
+                    {tag} × {count}
+                  </a>
+                </span>
+              ))}
+          </div>
+        </>
+      ))
+    }
+  </div>
+</CardLayout>

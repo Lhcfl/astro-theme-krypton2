@@ -1,0 +1,107 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+import type { CollectionEntry } from "astro:content";
+import moment from "moment";
+import Clickable from "@/components/Clickable.astro";
+import { blogUrl, categoryUrl, tagUrl } from "@/utils/url";
+type Props = HTMLAttributes<"div"> & {
+  posts: CollectionEntry<"blog">[];
+};
+
+const { posts, class: className, ...props } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) => {
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+
+const years = new Map<number, CollectionEntry<"blog">[]>();
+
+for (const post of sortedPosts) {
+  const year = post.data.date.getFullYear();
+  if (!years.has(year)) {
+    years.set(year, []);
+  }
+  years.get(year)!.push(post);
+}
+---
+
+<div class=`posts-list-simple ${className}` {...props}>
+  {
+    years.entries().map(([year, posts]) => (
+      <section class="year-section">
+        <div class="flex items-center gap-4">
+          <h2 class="year card-title my-2 text-2xl">{year}</h2>
+          <span class="badge badge-soft badge-info font-sans">
+            {posts.length} posts
+          </span>
+        </div>
+        <ul class="posts-list timeline timeline-vertical">
+          {posts.map((post, index) => (
+            <li class="timeline-line">
+              {index !== 0 && <hr />}
+              <div class="post-date timeline-start text-gray-500 text-sm">
+                <time datetime={post.data.date.toISOString()}>
+                  {moment(post.data.date).format("MM-DD")}
+                </time>
+              </div>
+              <Clickable
+                class="post-box timeline-end w-full mt-2 p-2 hover:bg-primary/10 transition-all rounded-sm"
+                aria-label={`Read ${post.data.title || "this article"}`}
+                href={blogUrl(post)}
+              >
+                <p>
+                  <a class="text-sm md:text-base" href={blogUrl(post)}>
+                    {post.data.title || post.data.date.toLocaleDateString()}
+                  </a>
+                </p>
+                <p>
+                  {post.data.categories && (
+                    <a
+                      href={categoryUrl(post.data.categories)}
+                      class="category-item-simple hover:underline text-xs text-gray-500 flex items-center"
+                    >
+                      {post.data.categories}
+                    </a>
+                  )}
+                  <span class="tags-list text-xs text-gray-500">
+                    {post.data.tags?.map((tag) => (
+                      <a
+                        class="tag-item-simple hover:underline"
+                        href={tagUrl(tag)}
+                      >
+                        #{tag}
+                      </a>
+                    ))}
+                  </span>
+                </p>
+              </Clickable>
+              {index !== posts.length - 1 && <hr />}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  @reference "../styles/tailwind.css";
+
+  .posts-list.timeline > li {
+    --timeline-col-start: 5em;
+  }
+  @media screen and (max-width: 640px) {
+    .posts-list.timeline > li {
+      --timeline-col-start: 4em;
+    }
+  }
+
+  .timeline-line .post-date {
+    @apply transition-all;
+  }
+
+  .timeline-line:hover .post-date {
+    @apply text-primary;
+  }
+</style>

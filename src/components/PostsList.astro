@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostCard from "./PostCard.astro";
+
+type Props = {
+  posts: CollectionEntry<"blog">[];
+  sort?: boolean;
+};
+
+const { posts, sort = false } = Astro.props;
+
+const sortedPosts = sort
+  ? posts.sort((a, b) => {
+      return b.data.date.getTime() - a.data.date.getTime();
+    })
+  : posts;
+---
+
+<div class="posts-list flex flex-col">
+  {sortedPosts.map((post) => <PostCard post={post} />)}
+</div>

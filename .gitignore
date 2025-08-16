@@ -12,6 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+data/**/*
+!data/**/.gitkeep
 
 # environment variables
 .env

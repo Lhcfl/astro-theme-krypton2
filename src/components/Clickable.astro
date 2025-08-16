@@ -1,0 +1,22 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div"> & {
+  is?: string;
+  href: string;
+};
+const {
+  is = "div",
+  href,
+  class: className,
+  "aria-label": AriaLabel,
+  ...props
+} = Astro.props;
+
+const Element = is;
+---
+
+<Element class:list={[`clickable ${className}`]} {...props}>
+  <slot />
+  <a class="clickable-bkg-link" href={href} aria-label={AriaLabel}></a>
+</Element>

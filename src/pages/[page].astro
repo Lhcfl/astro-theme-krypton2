@@ -1,0 +1,36 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import { render } from "astro:content";
+import CardLayout from "@/layouts/CardLayout.astro";
+import Toc from "@/components/Toc.astro";
+import Comment from "@/components/Comment.astro";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+  return pages.map((page) => ({
+    params: { page: page.id },
+    props: { page },
+  }));
+}
+
+type Props = {
+  page: CollectionEntry<"pages">;
+};
+
+const { page } = Astro.props;
+const { Content, headings } = await render(page);
+const hasSidebar = headings.length > 1;
+---
+
+<CardLayout
+  title={page.data.title}
+  image={page.data.thumbnail}
+  description={page.data.description || page.data.title}
+  hasSidebar={hasSidebar}
+>
+  <div class="markdown-body is-detailed">
+    <Content />
+  </div>
+  <Comment class="mt-8" uid={`page:${page.id}`} />
+  {hasSidebar && <Toc data={headings} slot="sidebar" />}
+</CardLayout>

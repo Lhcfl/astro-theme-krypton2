@@ -1,0 +1,64 @@
+---
+import { SITE_TITLE, SiteConfig } from "@/consts";
+import DarkLightToggle from "@/components/DarkLightToggle.svelte";
+import HeaderLink from "./HeaderLink.astro";
+import { Image } from "astro:assets";
+import Logo from "@data/logo.png";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"header">;
+
+const { class: className } = Astro.props;
+---
+
+<header
+  class=`print:hidden flex sticky top-0 ${className}`
+  un-max-md="items-center justify-between w-full h-15 z-50 bg-surface px-2"
+  un-max-lg="w-20"
+  un-lg="w-70"
+  un-md="flex-col h-screen text-lg p-4 flex-shrink-0 flex-grow-0"
+  un-border="max-md:b md:r  base-300"
+>
+  <a href="/" class="flex flex-col items-center gap-2 lg:mt-4">
+    <div class="nav-site-avatar avatar w-10 md:w-12 lg:hidden">
+      <Image
+        src={Logo}
+        alt={SITE_TITLE}
+        width={100}
+        height={100}
+        format="webp"
+        loading="eager"
+      />
+    </div>
+    <div class="nav-site-avatar avatar max-lg:hidden w-40">
+      <Image
+        src={Logo}
+        alt={SITE_TITLE}
+        width={512}
+        height={512}
+        format="webp"
+        loading="eager"
+      />
+    </div>
+    <span class="nav-site-title text-lg font-bold max-lg:hidden"
+      >{SITE_TITLE}</span
+    >
+  </a>
+  <nav
+    class="links flex items-center gap-2 text-lg"
+    un-md="flex-col pt-6 text-2xl"
+    un-lg="text-base"
+  >
+    {
+      SiteConfig.nav.map((link) => (
+        <HeaderLink
+          class="md:(h-10 w-full hover:bg-primary/10 hover:text-primary)"
+          {...link}
+        />
+      ))
+    }
+  </nav>
+  <div class="navbar-end">
+    <DarkLightToggle client:load />
+  </div>
+</header>

@@ -1,0 +1,19 @@
+---
+import { SiteConfig } from "@/consts";
+import GitalkComment from "./comment/GitalkComment.astro";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div"> & {
+  uid?: string;
+};
+const Element = SiteConfig.gitalk ? GitalkComment : null;
+const { uid, ...props } = Astro.props;
+---
+
+{
+  Element && (
+    <div {...props}>
+      <Element uid={uid} />
+    </div>
+  )
+}

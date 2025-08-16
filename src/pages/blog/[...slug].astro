@@ -1,0 +1,43 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import { render } from "astro:content";
+import Toc from "@/components/Toc.astro";
+import CardLayout from "@/layouts/CardLayout.astro";
+import { generateDescription } from "@/utils/gen-description";
+import PostMeta from "@/components/PostMeta.astro";
+import Comment from "@/components/Comment.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content, headings } = await render(post);
+const description = await generateDescription(post);
+---
+
+<CardLayout
+  title={post.data.title || post.data.date.toLocaleString()}
+  description={description}
+  hasSidebar={post.data.toc}
+>
+  {post.data.incomplete ? (
+    <div class="markdown-body is-detailed">
+      此博客尚未写完，等等吧
+    </div>
+  ) : (
+    <div class="markdown-body is-detailed">
+      <Content />
+    </div>
+    <div class="divider"></div>
+    <PostMeta post={post} />
+    <Comment class="mt-8" uid={`blog:${post.id}`} />
+  )}
+  {post.data.toc && <Toc data={headings} slot="sidebar" />}
+</CardLayout>

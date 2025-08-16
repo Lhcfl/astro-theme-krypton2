@@ -1,0 +1,71 @@
+---
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import "@/styles/blog-basic.scss";
+import "@/styles/tailwind.css";
+import "katex/dist/katex.min.css";
+import { SITE_TITLE } from "../consts";
+import FallbackImage from "@/assets/blog-placeholder-1.jpg";
+import { ClientRouter } from "astro:transitions";
+import Logo from "@data/logo.png";
+import { getImage } from "astro:assets";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+let { title, image, description } = Astro.props;
+if (title != SITE_TITLE) {
+  title += ` ⬝ ${SITE_TITLE}`;
+}
+
+const logo = await getImage({
+  src: Logo,
+  width: 100,
+  height: 100,
+  format: "webp",
+});
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type=`image/${logo.options.format}` href={logo.src} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
+/>
+<meta name="generator" content={Astro.generator} />
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{image && <meta property="og:image" content={new URL(image.src, Astro.url)} />}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+{
+  image && (
+    <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+  )
+}
+
+<ClientRouter />

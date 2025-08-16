@@ -1,0 +1,28 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a"> & { icon: string; label: string };
+
+const { icon, label, href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
+---
+
+<a
+  href={href}
+  role="button"
+  class:list={[
+    "header-link flex items-center justify-center gap-1 transition",
+    className,
+    { "text-primary": isActive },
+  ]}
+  aria-label={label}
+  {...props}
+>
+  <Icon name={icon} />
+  <span class="max-lg:hidden">
+    {label}
+  </span>
+</a>

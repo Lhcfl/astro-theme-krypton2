@@ -1,0 +1,40 @@
+---
+import { Statics } from "@/utils/statics";
+import { Icon } from "astro-icon/components";
+---
+
+<div class="stats shadow">
+  <div class="stat">
+    <div class="stat-title">Blogs count</div>
+    <div class="stat-value text-primary">{Statics.blogCount}</div>
+    <div class="stat-figure text-primary">
+      <Icon name="mingcute:paper-2-line" />
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Notes count</div>
+    <div class="stat-value text-secondary">{Statics.notesCount}</div>
+    <div class="stat-figure text-secondary">
+      <Icon name="mingcute:thought-line" />
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Pages count</div>
+    <div class="stat-value text-accent">{Statics.pagesCount}</div>
+    <div class="stat-figure text-accent">
+      <Icon name="mingcute:file-line" />
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Tags count</div>
+    <div class="stat-value">{Statics.tagsCount}</div>
+    <div class="stat-figure"><Icon name="mingcute:tag-2-line" /></div>
+  </div>
+</div>
+
+<style>
+  .stat-figure {
+    padding-top: 0.6em;
+    font-size: 1.5em;
+  }
+</style>

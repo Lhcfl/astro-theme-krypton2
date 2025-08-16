@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+import { categoryUrl, tagUrl } from "@/utils/url";
+
+type Props = HTMLAttributes<"p"> & {
+  post: CollectionEntry<"blog">;
+};
+
+const { post, class: className, ...props } = Astro.props;
+---
+
+<p class=`post-meta flex flex-wrap items-center gap-2 ${className}` {...props}>
+  <span class="date flex gap-1 items-center flex-shrink-0 text-sm">
+    <FormattedDate date={post.data.date} />
+  </span>
+  <span class="categories items">
+    {
+      post.data.categories && (
+        <a class="item" href={categoryUrl(post.data.categories)}>
+          <Icon class="flex-shrink-0" name="mingcute:folder-2-line" />
+          <span class="truncate">{post.data.categories}</span>
+        </a>
+      )
+    }
+  </span>
+  <span class="tags items">
+    {
+      post.data.tags?.map((tag) => (
+        <a class="item" href={tagUrl(tag)}>
+          <Icon class="flex-shrink-0" name="mingcute:tag-line" />
+          <span class="truncate">{tag}</span>
+        </a>
+      ))
+    }
+  </span>
+</p>
+
+<style>
+  @reference "../styles/tailwind.css";
+
+  .items {
+    @apply flex flex-wrap max-w-full overflow-hidden text-ellipsis gap-2;
+  }
+
+  .item {
+    @apply text-sm flex items-center gap-1 smooth-underline truncate;
+  }
+</style>

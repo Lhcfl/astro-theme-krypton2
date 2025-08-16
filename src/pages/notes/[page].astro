@@ -1,0 +1,47 @@
+---
+import FormattedDate from "@/components/FormattedDate.astro";
+import NoteCard from "@/components/NoteCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import CardLayout from "@/layouts/CardLayout.astro";
+import type { GetStaticPaths, Page } from "astro";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { getCollection } from "astro:content";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const notes = await getCollection("notes");
+  notes.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+  return paginate(notes, { pageSize: 20 });
+};
+
+type Props = { page: Page<CollectionEntry<"notes">> };
+
+const { page } = Astro.props;
+const notes = await Promise.all(
+  page.data.map(async (note) => {
+    const { Content } = await render(note);
+    return {
+      ...note,
+      Content,
+    };
+  })
+);
+
+const pages = [-2, -1, 0, 1, 2, 3, 4]
+  .map((d) => page.currentPage + d)
+  .filter((x) => x > 0 && x <= page.total);
+---
+
+<CardLayout title="Notes" description="Miscellaneous thoughts">
+  <div class="notes">
+    {notes.map((note) => <NoteCard note={note} />)}
+  </div>
+  <Pagination
+    class="w-full text-center mt-4"
+    page={page}
+    buildUrl={(num) => `/notes/${num}`}
+  />
+</CardLayout>

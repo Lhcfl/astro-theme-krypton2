@@ -1,0 +1,45 @@
+@import 'animate.css';
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+[data-theme="dark"] {
+  --color-primary: #1daef3;
+}
+
+@layer components {
+  .post-meta-badge {
+    @apply badge badge-dash hover:badge-secondary text-sm transition-all whitespace-nowrap overflow-hidden text-ellipsis justify-start;
+  }
+}
+
+/** A11y: remove animations for prefers-reduced-motion, 
+  * which is a user preference for reduced motion to help with
+  * accessibility. This is important for users who may experience
+  * discomfort or disorientation from animations.
+  */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.clickable {
+  @apply relative;
+
+  a.clickable-bkg-link {
+    @apply absolute ! inset-0 ! z-0 !;
+  }
+
+  a:not(.clickable-bkg-link) {
+    @apply relative z-1;
+  }
+
+  button {
+    @apply relative z-1;
+  }
+}
+
+.markdown-body a:not(.clickable-bkg-link) {
+  @apply underline decoration-dotted decoration-primary/50 underline-offset-4 smooth-underline;
+}

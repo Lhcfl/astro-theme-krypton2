@@ -1,0 +1,64 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatButtons from "@/components/FloatButtons.astro";
+import type { ImageMetadata } from "astro";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  maxw?: string;
+  hasSidebar?: boolean;
+} & HTMLAttributes<"div">;
+
+const {
+  title,
+  description,
+  image,
+  class: className,
+  hasSidebar,
+  ...props
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} image={image} />
+  </head>
+  <body class:list={[{ "has-sidebar": hasSidebar }]}>
+    <div class="app bg-surface text-content">
+      <div class="flex justify-center max-md:flex-col">
+        <Header class="flex-[0_0_auto]" />
+        <div class="main-container flex-grow-0 flex-shrink flex-basis-200">
+          <main
+            class=`main-content relative min-h-screen p-4 md:pt-6 ${className}`
+            {...props}
+          >
+            <slot />
+          </main>
+          <Footer />
+        </div>
+        <div
+          class="sidebar-container flex-[0_0_auto] print:hidden!
+            max-md:hidden
+            max-md:show-toc:(block fixed bottom-2 w-full animate-(fade-in-up duration-300 ease-in-out))
+            md:(relative pt-6)"
+        >
+          <div
+            class="sticky top-6 bg-surface md:px-0 md:w-70 max-md:show-toc:(px-2 pt-4 border-(t base-300))"
+            un-overflow="y-auto x-visible"
+          >
+            <div class="min-w-50 md:w-fit xl:min-w-70">
+              <slot name="sidebar" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <FloatButtons />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+---
+import type { Page } from "astro";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  page: Page<unknown>;
+  buildUrl: (number: number) => string;
+} & HTMLAttributes<"div">;
+const { page, buildUrl, ...props } = Astro.props;
+
+function generatePaginationBar(currentPage: number, lastPage: number) {
+  const pagination: (number | null)[] = [];
+  const OFFSET = 1;
+  const totalVisible = 1 + 1 + OFFSET + 1 + OFFSET + 1 + 1;
+  // [1, (...), -OFFSET, current, +OFFSET, (...), 1]
+  if (lastPage <= totalVisible) {
+    // If total pages are less than or equal to the visible limit, show all
+    for (let i = 1; i <= lastPage; i++) {
+      pagination.push(i);
+    }
+    return pagination;
+  }
+
+  const firstPage = 1;
+  pagination.push(firstPage);
+
+  if (currentPage <= 2 + OFFSET + 1) {
+    for (let i = 2; i <= 1 + 1 + OFFSET + 1 + OFFSET; i++) {
+      pagination.push(i);
+    }
+    pagination.push(null); // Ellipsis
+  } else if (currentPage + OFFSET + 1 >= lastPage - 1) {
+    pagination.push(null); // Ellipsis
+    for (let i = lastPage - (1 + OFFSET + 1 + OFFSET); i < lastPage; i++) {
+      pagination.push(i);
+    }
+  } else {
+    pagination.push(null); // Ellipsis
+    for (let i = currentPage - OFFSET; i <= currentPage + OFFSET; i++) {
+      pagination.push(i);
+    }
+    pagination.push(null); // Ellipsis
+  }
+
+  pagination.push(lastPage);
+  return pagination;
+}
+
+const pages = generatePaginationBar(page.currentPage, page.lastPage);
+---
+
+{
+  pages.length > 1 && (
+    <div {...props}>
+      <div class="pagination join">
+        {pages.map((pageNum) =>
+          pageNum == null ? (
+            <button class="join-item btn btn-disabled">...</button>
+          ) : (
+            <a
+              class={`join-item btn ${pageNum === page.currentPage ? "btn-active btn-primary" : ""}`}
+              href={buildUrl(pageNum)}
+            >
+              {pageNum}
+            </a>
+          )
+        )}
+      </div>
+    </div>
+  )
+}

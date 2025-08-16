@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+import Clickable from "./Clickable.astro";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  name: string;
+  url: string;
+  icon?: string | ImageMetadata;
+  description?: string;
+} & HTMLAttributes<"div">;
+
+const {
+  name,
+  url,
+  icon,
+  description,
+  class: className,
+  ...props
+} = Astro.props;
+
+const isICO = typeof icon == "string" && icon.endsWith(".ico");
+---
+
+<Clickable
+  href={url}
+  class=`card border border-base-content/10 hover:bg-primary/10 transition-all card-sm ${icon ? 'card-side' : ''} ${className}`
+  aria-label={`Visit ${name}'s blog`}
+  {...props}
+  is="div"
+>
+  {
+    icon && (
+      <figure class="avatar">
+        {isICO ? (
+          <img
+            src={icon}
+            alt={`avatar of ${name}`}
+            class="card-img w-20! h-20!"
+            width="160"
+            height="160"
+            loading="lazy"
+          />
+        ) : (
+          <Image
+            src={icon as any}
+            alt={`avatar of ${name}`}
+            class="card-img w-20! h-20!"
+            width="160"
+            height="160"
+            quality="high"
+          />
+        )}
+      </figure>
+    )
+  }
+  <div class="card-body">
+    <div class="card-title">{name}</div>
+    <div class="card-desc">
+      {description}
+    </div>
+  </div>
+</Clickable>

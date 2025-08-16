@@ -1,0 +1,73 @@
+---
+import PostsListPlain from "@/components/PostsListPlain.astro";
+import CardLayout from "@/layouts/CardLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { chunkArray } from "@/utils/array";
+import Clickable from "@/components/Clickable.astro";
+import { Icon } from "astro-icon/components";
+import WordCloud from "@/components/WordCloud.svelte";
+import { tagUrl } from "@/utils/url";
+
+type Post = CollectionEntry<"blog">;
+
+const posts = await getCollection("blog");
+const tagsPosts = new Map<string, Post[]>();
+
+for (const post of posts) {
+  for (const tag of post.data.tags || []) {
+    tagsPosts.set(tag, [...(tagsPosts.get(tag) || []), post]);
+  }
+}
+
+const tagPostsSorted = tagsPosts
+  .entries()
+  .toArray()
+  .sort((a, b) => (a[1].length > b[1].length ? -1 : 1));
+---
+
+<CardLayout title="Tags" description="All tags used in the blog">
+  <div class="tag-cloud mt-8 w-full h-60">
+    <WordCloud
+      className="w-full h-full dark:invert bg-transparent!"
+      client:only
+      list={tagPostsSorted.map(([tag, posts]) => [
+        tag,
+        posts.length,
+        tagUrl(tag),
+      ])}
+      rotateRatio={0.15}
+      rotationSteps={2}
+      shrinkToFit={true}
+      classes="transition-all hover:scale-125 cursor-pointer"
+      fontFamily="Source Han Serif CN for Display"
+      shape="square"
+    />
+  </div>
+  <div class="tags-list mt-8 grid grid-cols-2 md:grid-cols-3">
+    {
+      tagPostsSorted.map(([tag, posts]) => (
+        <Clickable
+          class="p-4 text-sm rounded-none hover:bg-primary/10 transition-all"
+          href={tagUrl(tag)}
+          aria-label={`View posts tagged with ${tag}`}
+        >
+          <div class="flex items-center justify-between w-full mb-2">
+            <h2 class="tag-title font-bold text-110% flex-shrink-1 flex-grow-1 truncate">
+              <a href={tagUrl(tag)} class="flex items-center gap-1 truncate">
+                <Icon class="flex-shrink-0" name="mingcute:tag-line" />
+                <span class="truncate smooth-underline">{tag}</span>
+              </a>
+            </h2>
+            <span class="flex-shrink-0 badge badge-sm badge-soft badge-info font-sans">
+              x {posts.length}
+            </span>
+          </div>
+          <div class="posts-list-plain text-base-content/85">
+            <PostsListPlain class="pl-2" posts={posts.slice(0, 5)} />
+          </div>
+        </Clickable>
+      ))
+    }
+  </div>
+</CardLayout>

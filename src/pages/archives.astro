@@ -1,0 +1,11 @@
+---
+import { getCollection } from "astro:content";
+import PostsListSimple from "@/components/PostsListSimple.astro";
+import CardLayout from "@/layouts/CardLayout.astro";
+
+const posts = await getCollection("blog");
+---
+
+<CardLayout title="Archives" description="All posts in the blog">
+  <PostsListSimple class="mt-2" posts={posts} />
+</CardLayout>

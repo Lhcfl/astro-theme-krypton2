@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  post?: CollectionEntry<"blog">;
+};
+
+const { post } = Astro.props;
+
+const html = post?.data.summary || (await Astro.slots.render("default"));
+const moreIndex = html.indexOf("<!-- more");
+let excerpt = html.slice(0, moreIndex == -1 ? undefined : moreIndex);
+if (!excerpt.startsWith("<p")) {
+  excerpt = `<p>${excerpt}</p>`;
+}
+---
+
+<Fragment set:html={excerpt} />

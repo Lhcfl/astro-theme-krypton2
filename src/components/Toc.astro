@@ -1,0 +1,181 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { RecursiveHeading } from "@/types/toc";
+import TocListRec from "@/components/TocListRec.astro";
+import { Icon } from "astro-icon/components";
+
+type Props = { data: MarkdownHeading[] };
+const { data } = Astro.props as Props;
+
+function createRecursiveHeading(
+  headings: MarkdownHeading[],
+): RecursiveHeading[] {
+  if (headings.length === 0) {
+    return [];
+  }
+  const minDepth = Math.min(...headings.map((h) => h.depth));
+  const ret: RecursiveHeading[] = [];
+  let current: RecursiveHeading = { kind: "shadow", inner: [] };
+  let currentInner: MarkdownHeading[] = [];
+  let index = -1;
+  for (const heading of headings) {
+    index++;
+    if (index == 0 && heading.depth === minDepth) {
+      current = { kind: "heading", ...heading, inner: [] };
+      continue;
+    }
+    if (heading.depth > minDepth) {
+      currentInner.push(heading);
+      continue;
+    }
+    if (heading.depth == minDepth) {
+      current.inner = createRecursiveHeading(currentInner);
+      ret.push(current);
+      current = { kind: "heading", ...heading, inner: [] };
+      currentInner = [];
+    }
+  }
+  ret.push(current);
+  return ret;
+}
+
+const minDepth = Math.min(...data.map((h) => h.depth)) || 0;
+
+const getMargin = (depth: number) => {
+  switch (depth - minDepth) {
+    case 0:
+      return "ml-0";
+    case 1:
+      return "ml-2";
+    case 2:
+      return "ml-4";
+    case 3:
+      return "ml-6";
+    case 4:
+      return "ml-7";
+    case 5:
+      return "ml-8";
+    case 6:
+      return "ml-9";
+    default:
+      return "ml-7"; // For depth greater than 6, use ml-7
+  }
+};
+---
+
+<div id="page-toc">
+  <ul class="timeline w-full">
+    {
+      data.map((heading, idx) => (
+        <li
+          class="toc-item flex items-center gap-2 transition text-base-content/60"
+          un-p="x-2 y-1"
+          un-hover="bg-secondary/10 text-secondary"
+          data-slug={heading.slug}
+        >
+          <div class="timeline-middle">
+            <Icon name="mingcute:check-circle-fill" class="active-indicator" />
+            <Icon
+              name="mingcute:arrow-right-circle-fill"
+              class="active-now-indicator"
+            />
+            <Icon name="mingcute:add-circle-line" class="inactive-indicator" />
+          </div>
+          <div class="timeline-end">
+            <div class={getMargin(heading.depth)}>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style lang="scss">
+  li.toc-item {
+    --timeline-col-start: 1em;
+    .active-now-indicator,
+    .active-indicator {
+      display: none;
+    }
+  }
+  li.toc-item.active {
+    @apply text-secondary;
+    .active-indicator {
+      display: block;
+    }
+    .inactive-indicator {
+      display: none;
+    }
+
+    &:not(.active-now) hr {
+      @apply bg-secondary;
+    }
+
+    &.active-now {
+      @apply text-secondary+30;
+      .active-indicator {
+        display: none;
+      }
+      .active-now-indicator {
+        display: block;
+      }
+      .hr-begin {
+        @apply bg-secondary;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { useThrottledFn } from "@/utils/throttle";
+  function highlightTocListItems(slug: string | null | undefined) {
+    const toc = document.getElementById("page-toc");
+    if (!toc) return;
+    const lis = toc.querySelectorAll("li");
+    lis.forEach((li) => li.classList.remove("active", "active-now"));
+    if (slug == null) {
+      return;
+    }
+    for (const li of lis) {
+      li.classList.add("active");
+      // console.log([li.dataset.slug, slug]);
+      if (li.dataset.slug === slug) {
+        li.classList.add("active-now");
+        break;
+      }
+    }
+  }
+
+  function obs() {
+    const tocRoot = document.querySelector(".markdown-body.is-detailed");
+    if (!tocRoot) return;
+    const targets = Array.from(
+      tocRoot.querySelectorAll("h1,h2,h3,h4,h5,h6").values(),
+    );
+
+    const evalHighlight = useThrottledFn(() => {
+      const firstVisibleId = targets.findIndex(
+        (t) => t.getBoundingClientRect().y > 110,
+      );
+      if (firstVisibleId === 0) {
+        highlightTocListItems(null);
+      } else if (firstVisibleId == -1) {
+        highlightTocListItems(targets.at(-1)?.id);
+      } else {
+        highlightTocListItems(targets.at(firstVisibleId - 1)?.id);
+      }
+    }, 200);
+
+    document.addEventListener("scroll", evalHighlight);
+    document.addEventListener("astro:after-swap", () => {
+      document.removeEventListener("scroll", evalHighlight);
+    });
+  }
+
+  // after the page is swapped, we need to re-evaluate the toc observer
+  document.addEventListener("astro:after-swap", obs);
+  // and the init call
+  obs();
+</script>

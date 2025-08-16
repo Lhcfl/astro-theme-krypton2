@@ -1,0 +1,45 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "@/layouts/BaseLayout.astro";
+import PostsList from "@/components/PostsList.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const tags = new Map<string, CollectionEntry<"blog">[]>();
+
+  for (const post of posts) {
+    for (const tag of post.data.tags || []) {
+      if (!tags.has(tag)) {
+        tags.set(tag, []);
+      }
+      tags.get(tag)!.push(post);
+    }
+  }
+
+  return Array.from(tags.entries()).map(([tag, posts]) => ({
+    params: { tag },
+    props: { tag, posts },
+  }));
+}
+
+type Props = {
+  tag: string;
+  posts: CollectionEntry<"blog">[];
+};
+
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={`Tag ⬝ ${tag}`} description={`Posts tagged with ${tag}`}>
+  <div class="tag-overview stats mb-4 w-full">
+    <div class="stat">
+      <div class="stat-value text-wrap">
+        <h1>{tag}</h1>
+      </div>
+      <div class="stat-desc">
+        <span>Total posts: {posts.length}</span>
+      </div>
+    </div>
+  </div>
+  <PostsList posts={posts} sort={true} />
+</Layout>

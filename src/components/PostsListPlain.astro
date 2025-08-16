@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+import type { CollectionEntry } from "astro:content";
+import moment from "moment";
+import Clickable from "@/components/Clickable.astro";
+import { blogUrl } from "@/utils/url";
+
+type Props = HTMLAttributes<"div"> & {
+  posts: CollectionEntry<"blog">[];
+};
+
+const { posts, class: className, ...props } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) => {
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+---
+
+<div class=`posts-list-plain ${className}` {...props}>
+  <ul class="list-disc list-inside marker:text-sky-400">
+    {
+      sortedPosts.map((post) => (
+        <li class="truncate">
+          <a class="smooth-underline" href={blogUrl(post)}>
+            {post.data.title || post.data.date.toLocaleDateString()}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
