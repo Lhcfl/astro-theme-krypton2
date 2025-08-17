@@ -2,15 +2,18 @@
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import { getCollection } from "astro:content";
 import PostsList from "@/components/PostsList.astro";
-import ProfileMd from "@data/profile.mdx";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { render } from "astro:content";
 const posts = await getCollection("blog");
+const profiles = await Promise.all(
+  (await getCollection("profile")).map((x) => render(x)),
+);
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <div class="profile markdown-body is-detailed text-center mb-4">
     <h1>{SITE_TITLE}</h1>
-    <ProfileMd />
+    {profiles.map((x) => <x.Content />)}
   </div>
   <PostsList posts={posts} sort={true} />
 </BaseLayout>

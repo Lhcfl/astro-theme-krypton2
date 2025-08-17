@@ -53,4 +53,8 @@ const typ = defineCollection({
   }),
 });
 
-export const collections = { blog, pages, typ, notes };
+const profile = defineCollection({
+  loader: glob({ base: dataPath, pattern: "profile.{md,mdx}" }),
+})
+
+export const collections = { blog, pages, typ, notes, profile };
