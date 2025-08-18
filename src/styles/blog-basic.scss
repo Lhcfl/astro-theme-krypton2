@@ -203,8 +203,9 @@ body {
   pre {
     padding: 10px 15px;
     font-family: var(--mono-font-face);
-    background-color: var(--color-base-200) !important;
     line-height: 1.4em !important;
+
+    @apply 'bg-base-100!';
 
     @media screen and (max-width: 768px) {
       font-size: 0.9em;

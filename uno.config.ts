@@ -25,10 +25,10 @@ export default defineConfig({
             "content": "oklch(20% 0 0)",
 
             // 基础色
-            'base-100': 'oklch(98% 0.02 240)',
-            'base-200': 'oklch(95% 0.03 240)',
-            'base-300': 'oklch(92% 0.04 240)',
-            'base-content': 'oklch(20% 0.05 240)',
+            'base-100': 'oklch(98% 0 0)',
+            'base-200': 'oklch(95% 0 0)',
+            'base-300': 'oklch(92% 0 0)',
+            'base-content': 'oklch(20% 0 0)',
 
             // 主色
             'primary': 'oklch(55% 0.3 240)',
@@ -70,10 +70,10 @@ export default defineConfig({
             "content": "oklch(80% 0 0)",
 
             // 基础色 - 暗色模式反转亮度
-            'base-100': 'oklch(15% 0.02 240)',
-            'base-200': 'oklch(20% 0.03 240)',
-            'base-300': 'oklch(25% 0.04 240)',
-            'base-content': 'oklch(90% 0.05 240)',
+            'base-100': 'oklch(15% 0 0)',
+            'base-200': 'oklch(20% 0 0)',
+            'base-300': 'oklch(25% 0 0)',
+            'base-content': 'oklch(90% 0 0)',
 
             // 主色 - 稍微提高亮度
             'primary': 'oklch(65% 0.3 240)',
