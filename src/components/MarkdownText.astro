@@ -1,0 +1,14 @@
+---
+import { marked } from "marked";
+
+type Props = {
+    text: string;
+    inline?: boolean;
+};
+
+const { text, inline } = Astro.props;
+const renderedText = inline ? marked.parseInline(text) : marked.parse(text);
+const Component = inline ? "span" : "div";
+---
+
+<Component set:html={renderedText} />

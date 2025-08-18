@@ -24,6 +24,7 @@ const description = await generateDescription(post);
 
 <CardLayout
   title={post.data.title || post.data.date.toLocaleString()}
+  useMarkdown={true}
   description={description}
   hasSidebar={post.data.toc}
 >

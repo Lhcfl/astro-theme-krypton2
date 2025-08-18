@@ -5,6 +5,7 @@ import { render } from "astro:content";
 import PostMeta from "./PostMeta.astro";
 import Clickable from "./Clickable.astro";
 import { blogUrl } from "@/utils/url";
+import MarkdownText from "./MarkdownText.astro";
 
 type Props = {
   post: CollectionEntry<"blog">;
@@ -23,7 +24,10 @@ const { Content } = await render(post);
 >
   <h2 class="post-title" un-m="t-2 b-2" un-text="base md:xl" font-bold>
     <a class="smooth-underline" href={blogUrl(post)}>
-      {post.data.title || post.data.date.toLocaleDateString()}
+      <MarkdownText
+        inline={true}
+        text={post.data.title || post.data.date.toLocaleDateString()}
+      />
     </a>
   </h2>
   <div class="excerpt markdown-body" un-text="sm md:base">

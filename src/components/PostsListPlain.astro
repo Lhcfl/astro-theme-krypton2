@@ -5,6 +5,7 @@ import type { CollectionEntry } from "astro:content";
 import moment from "moment";
 import Clickable from "@/components/Clickable.astro";
 import { blogUrl } from "@/utils/url";
+import MarkdownText from "./MarkdownText.astro";
 
 type Props = HTMLAttributes<"div"> & {
   posts: CollectionEntry<"blog">[];
@@ -23,7 +24,10 @@ const sortedPosts = posts.sort((a, b) => {
       sortedPosts.map((post) => (
         <li class="truncate">
           <a class="smooth-underline" href={blogUrl(post)}>
-            {post.data.title || post.data.date.toLocaleDateString()}
+            <MarkdownText
+              inline={true}
+              text={post.data.title || post.data.date.toLocaleDateString()}
+            />
           </a>
         </li>
       ))

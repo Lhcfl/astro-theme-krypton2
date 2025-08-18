@@ -1,13 +1,20 @@
 ---
+import MarkdownText from "@/components/MarkdownText.astro";
 import BaseLayout from "./BaseLayout.astro";
 
 type LayoutProps = Parameters<typeof BaseLayout>[0];
 
 type Props = {
   hasSidebar?: boolean;
+  useMarkdown?: boolean;
 } & LayoutProps;
 
-const { title, hasSidebar = false, ...props } = Astro.props;
+const {
+  title,
+  hasSidebar = false,
+  useMarkdown = false,
+  ...props
+} = Astro.props;
 ---
 
 <BaseLayout
@@ -17,10 +24,10 @@ const { title, hasSidebar = false, ...props } = Astro.props;
   {...props}
 >
   <div class="flex-grow-1 card card-lg rounded-lg">
-    <article class="md:card-body">
-      <div class="page-title text-3xl font-bold">
-        <h1>{title}</h1>
-      </div>
+    <article>
+      <h1 class="page-title text-3xl font-bold">
+        {useMarkdown ? <MarkdownText text={title} inline={true} /> : title}
+      </h1>
       <div>
         <slot />
       </div>

@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import moment from "moment";
 import Clickable from "@/components/Clickable.astro";
 import { blogUrl, categoryUrl, tagUrl } from "@/utils/url";
+import MarkdownText from "./MarkdownText.astro";
 type Props = HTMLAttributes<"div"> & {
   posts: CollectionEntry<"blog">[];
 };
@@ -50,7 +51,12 @@ for (const post of sortedPosts) {
               >
                 <p>
                   <a class="text-sm md:text-base" href={blogUrl(post)}>
-                    {post.data.title || post.data.date.toLocaleDateString()}
+                    <MarkdownText
+                      inline={true}
+                      text={
+                        post.data.title || post.data.date.toLocaleDateString()
+                      }
+                    />
                   </a>
                 </p>
                 <p>
