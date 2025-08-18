@@ -28,7 +28,6 @@ const { uid } = Astro.props;
 </script>
 
 <style lang="scss" is:global>
-  @reference "../../styles/tailwind.css";
   .gt-container {
     box-sizing: border-box;
     font-size: 1em;
@@ -210,7 +209,7 @@ const { uid } = Astro.props;
       display: flex;
     }
     .gt-header-textarea {
-      @apply textarea w-full;
+      @apply border border-base-300 p-4 w-full;
     }
     .gt-header-comment {
       flex: 1;
