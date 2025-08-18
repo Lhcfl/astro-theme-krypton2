@@ -52,18 +52,24 @@ const pages = generatePaginationBar(page.currentPage, page.lastPage);
 {
   pages.length > 1 && (
     <div {...props}>
-      <div class="pagination join">
+      <div class="pagination inline-flex gap-2 w-fit">
         {pages.map((pageNum) =>
           pageNum == null ? (
-            <button class="join-item btn btn-disabled">...</button>
+            <button class="p-2" disabled>
+              ...
+            </button>
           ) : (
             <a
-              class={`join-item btn ${pageNum === page.currentPage ? "btn-active btn-primary" : ""}`}
+              class={`
+                w-10 h-10 font-sans flex items-center justify-center rounded-md transition
+                border border-base-300 bg-base-100 hover:bg-base-200 
+                ${pageNum === page.currentPage ? "bg-secondary/20 text-secondary border-secondary/50 hover:bg-secondary/30" : ""}
+                `}
               href={buildUrl(pageNum)}
             >
               {pageNum}
             </a>
-          )
+          ),
         )}
       </div>
     </div>

@@ -1,0 +1,44 @@
+---
+import FormattedDate from "@/components/FormattedDate.astro";
+import NoteCard from "@/components/NoteCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import CardLayout from "@/layouts/CardLayout.astro";
+import type { GetStaticPaths, Page } from "astro";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { getCollection } from "astro:content";
+import PostsList from "@/components/PostsList.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const blogs = await getCollection("blog");
+  blogs.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+  return paginate(blogs, { pageSize: 20 });
+};
+
+type Props = { page: Page<CollectionEntry<"blog">> };
+
+const { page } = Astro.props;
+const posts = page.data;
+
+const profiles = await Promise.all(
+  (await getCollection("profile")).map((x) => render(x)),
+);
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <div class="profile markdown-body is-detailed text-center mb-4">
+    <h1>{SITE_TITLE}</h1>
+    {profiles.map((x) => <x.Content />)}
+  </div>
+  <PostsList posts={posts} />
+  <Pagination
+    class="w-full text-center mt-4"
+    page={page}
+    buildUrl={(num) => `/blogs/${num}`}
+  />
+</BaseLayout>

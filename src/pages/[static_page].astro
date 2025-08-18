@@ -8,7 +8,7 @@ import Comment from "@/components/Comment.astro";
 export async function getStaticPaths() {
   const pages = await getCollection("pages");
   return pages.map((page) => ({
-    params: { page: page.id },
+    params: { static_page: page.id },
     props: { page },
   }));
 }
