@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Toggle from "./Toggle.astro";
+
+type Props = HTMLAttributes<"button">;
+
+const iconOn = "i-mingcute-list-check-fill";
+const iconOff = "i-mingcute-list-check-3-fill";
+
+const { class: className = "", ...props } = Astro.props;
+---
+
+<Toggle
+    id="toggle-list-view"
+    iconOn={iconOn}
+    iconOff={iconOff}
+    {...props}
+    aria-label="Toggle List View"
+/>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        document
+            .getElementById("toggle-list-view")
+            ?.addEventListener("click", () => {
+                document
+                    .querySelector(".posts-list")
+                    ?.classList.toggle("hidden");
+                document
+                    .querySelector(".posts-list-simple")
+                    ?.classList.toggle("hidden");
+            });
+    });
+</script>

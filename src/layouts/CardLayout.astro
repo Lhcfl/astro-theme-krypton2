@@ -17,21 +17,16 @@ const {
 } = Astro.props;
 ---
 
-<BaseLayout
-  title={title}
-  hasSidebar={hasSidebar}
-  class="flex gap-2 w-full"
-  {...props}
->
-  <div class="flex-grow-1 card card-lg rounded-lg">
-    <article>
-      <h1 class="page-title text-3xl font-bold">
+<BaseLayout title={title} hasSidebar={hasSidebar} {...props}>
+  <article>
+    <h1 class="page-title text-3xl font-bold">
+      <slot name="title">
         {useMarkdown ? <MarkdownText text={title} inline={true} /> : title}
-      </h1>
-      <div>
-        <slot />
-      </div>
-    </article>
-  </div>
+      </slot>
+    </h1>
+    <div>
+      <slot />
+    </div>
+  </article>
   {hasSidebar && <slot name="sidebar" slot="sidebar" />}
 </BaseLayout>

@@ -200,7 +200,8 @@ body {
     font-family: var(--mono-font-face);
     white-space: pre-wrap;
     padding: 2px 4px;
-    @apply text-sm bg-base-100;
+    font-size: 0.9em;
+    @apply bg-base-100;
   }
 
   pre {

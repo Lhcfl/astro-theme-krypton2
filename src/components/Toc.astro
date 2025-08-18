@@ -101,34 +101,25 @@ const getMargin = (depth: number) => {
     }
   }
 
-  function obs() {
+  const evalHighlight = useThrottledFn(() => {
     const tocRoot = document.querySelector(".markdown-body.is-detailed");
     if (!tocRoot) return;
     const targets = Array.from(
       tocRoot.querySelectorAll("h1,h2,h3,h4,h5,h6").values(),
     );
 
-    const evalHighlight = useThrottledFn(() => {
-      const firstVisibleId = targets.findIndex(
-        (t) => t.getBoundingClientRect().y > 110,
-      );
-      if (firstVisibleId === 0) {
-        highlightTocListItems(null);
-      } else if (firstVisibleId == -1) {
-        highlightTocListItems(targets.at(-1)?.id);
-      } else {
-        highlightTocListItems(targets.at(firstVisibleId - 1)?.id);
-      }
-    }, 200);
-
-    document.addEventListener("scroll", evalHighlight);
-    document.addEventListener("astro:after-swap", () => {
-      document.removeEventListener("scroll", evalHighlight);
-    });
-  }
+    const firstVisibleId = targets.findIndex(
+      (t) => t.getBoundingClientRect().y > 110,
+    );
+    if (firstVisibleId === 0) {
+      highlightTocListItems(null);
+    } else if (firstVisibleId == -1) {
+      highlightTocListItems(targets.at(-1)?.id);
+    } else {
+      highlightTocListItems(targets.at(firstVisibleId - 1)?.id);
+    }
+  }, 200);
 
   // after the page is swapped, we need to re-evaluate the toc observer
-  document.addEventListener("astro:after-swap", obs);
-  // and the init call
-  obs();
+  document.addEventListener("scroll", evalHighlight);
 </script>

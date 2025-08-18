@@ -1,0 +1,47 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"button"> & {
+    iconOn?: string;
+    iconOff?: string;
+    "aria-label": string;
+};
+
+const {
+    class: className = "",
+    iconOn = "",
+    iconOff = "",
+    ...props
+} = Astro.props;
+---
+
+<button
+    class=`btn-toggle inline-flex bg-base-100 p-0.7 border border-primary rounded-full ${className}`
+    {...props}
+>
+    <div class="w-11 h-6">
+        <div
+            class="ball p-1 w-6 h-6 rounded-full bg-primary/30 border border-primary text-primary+30 [button.btn-toggle-on_&]:translate-x-5 transition"
+        >
+            <div class=`${iconOn} hidden [button.btn-toggle-on_&]:block`></div>
+            <div class=`${iconOff} [button.btn-toggle-on_&]:hidden`></div>
+        </div>
+    </div>
+</button>
+
+<script>
+    document.addEventListener("astro:after-swap", () => {
+        console.log("after-swap");
+    });
+    document.addEventListener("astro:page-load", () => {
+        console.log("page-load");
+    });
+
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll(".btn-toggle").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                btn.classList.toggle("btn-toggle-on");
+            });
+        });
+    });
+</script>

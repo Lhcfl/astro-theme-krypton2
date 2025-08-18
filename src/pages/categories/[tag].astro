@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import Layout from "@/layouts/BaseLayout.astro";
-import PostsList from "@/components/PostsList.astro";
+import PostsListLayout from "@/layouts/PostsListLayout.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -31,19 +30,10 @@ type Props = {
 const { tag, posts } = Astro.props;
 ---
 
-<Layout
+<PostsListLayout
   title={`Category ⬝ ${tag}`}
   description={`Posts in the category ${tag}`}
+  posts={posts}
 >
-  <div class="category-overview stats mb-4 w-full">
-    <div class="stat">
-      <div class="stat-value text-wrap">
-        <h1>{tag}</h1>
-      </div>
-      <div class="stat-desc">
-        <span>Total posts: {posts.length}</span>
-      </div>
-    </div>
-  </div>
-  <PostsList posts={posts} sort={true} />
-</Layout>
+  <span slot="title">{tag}</span>
+</PostsListLayout>

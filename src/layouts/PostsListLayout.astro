@@ -1,0 +1,31 @@
+---
+import PostsList from "@/components/PostsList.astro";
+import BaseLayout from "./BaseLayout.astro";
+import PostsListSimple from "@/components/PostsListSimple.astro";
+import type { CollectionEntry } from "astro:content";
+import ListToggle from "@/components/ListToggle.astro";
+
+type Props = {
+  title: string;
+  description: string;
+  posts: CollectionEntry<"blog">[];
+};
+
+const { title, description, posts } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <h1 class="text-3xl font-bold">
+    <slot name="title">{title}</slot>
+  </h1>
+  <div class="meta my-2 flex justify-between">
+    <span class="badge text-sm font-sans badge-primary">
+      Posts {posts.length}
+    </span>
+    <div class="flex items-center gap-2">
+      <ListToggle />
+    </div>
+  </div>
+  <PostsList posts={posts} sort={true} />
+  <PostsListSimple class="hidden" posts={posts} />
+</BaseLayout>
