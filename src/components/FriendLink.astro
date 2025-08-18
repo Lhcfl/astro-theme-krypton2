@@ -24,7 +24,7 @@ const isICO = typeof icon == "string" && icon.endsWith(".ico");
 
 <Clickable
   href={url}
-  class=`card border border-base-content/10 hover:bg-primary/10 transition-all card-sm ${icon ? 'card-side' : ''} ${className}`
+  class=`flex border border-base-content/10 hover:bg-base-100 transition-all rounded-md overflow-hidden ${className}`
   aria-label={`Visit ${name}'s blog`}
   {...props}
   is="div"
@@ -54,9 +54,9 @@ const isICO = typeof icon == "string" && icon.endsWith(".ico");
       </figure>
     )
   }
-  <div class="card-body">
-    <div class="card-title">{name}</div>
-    <div class="card-desc">
+  <div class="p-4">
+    <div class="title font-bold">{name}</div>
+    <div class="description">
       {description}
     </div>
   </div>
