@@ -5,9 +5,19 @@ import type { HTMLAttributes } from "astro/types";
 type Props = HTMLAttributes<"a"> & { icon: string; label: string };
 
 const { icon, label, href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
+const pathname =
+  Astro.url.pathname.replace(import.meta.env.BASE_URL, "") || "/";
+
+const hrefbase = (() => {
+  if (href == "/") return href;
+  if (!href) return null;
+  let url = href.toString();
+  url = url.startsWith("/") ? url.slice(1) : url;
+  // remove the pagination
+  url = url.replace(/\/\d*$/, "");
+  return url;
+})();
+const isActive = hrefbase != null && pathname?.startsWith(hrefbase);
 ---
 
 <a
@@ -19,6 +29,8 @@ const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
     { "text-primary+30": isActive },
   ]}
   aria-label={label}
+  data-path-name={pathname}
+  data-href-base={hrefbase}
   {...props}
 >
   <Icon name={icon} />
