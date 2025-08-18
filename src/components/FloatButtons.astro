@@ -1,29 +1,26 @@
----
-import { Icon } from "astro-icon/components";
----
-
-<div class="float-buttons" aria-hidden="true">
-  <div class="back-to-top">
-    <div class="tooltip" data-tip="Scroll to top">
-      <button
-        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-        class="btn btn-circle btn-lg md:btn-xl"
-        aria-label="Scroll to top"
-      >
-        <Icon class="text-lg md:text-xl" name="mingcute:arrow-up-line" />
-      </button>
-    </div>
+<div
+  class="float-buttons fixed bottom-4 right-4 flex flex-col gap-2 print:hidden!"
+  aria-hidden="true"
+>
+  <div
+    class="opacity-0 translate-x-20 transition [body.is-scrolled_&]:(opacity-100 translate-x-0)"
+  >
+    <button
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      class="rounded-full p-4 text-lg md:text-xl bg-surface border-base-300 border"
+      aria-label="Scroll to top"
+    >
+      <div class="i-mingcute:arrow-up-line"></div>
+    </button>
   </div>
-  <div class="show-toc hidden md:hidden!">
-    <div class="tooltip" data-tip="Show TOC">
-      <button
-        onclick="document.body.classList.toggle('show-toc')"
-        class="btn btn-circle btn-lg md:btn-xl"
-        aria-label="Show TOC"
-      >
-        <Icon class="text-lg md:text-xl" name="mingcute:list-check-fill" />
-      </button>
-    </div>
+  <div class="hidden has-sidebar:block md:hidden!">
+    <button
+      onclick="document.body.classList.toggle('show-toc')"
+      class="rounded-full p-4 text-lg md:text-xl bg-surface border-base-300 border"
+      aria-label="Show TOC"
+    >
+      <div class="i-mingcute:list-check-fill"></div>
+    </button>
   </div>
 </div>
 
@@ -36,34 +33,3 @@ import { Icon } from "astro-icon/components";
     }
   });
 </script>
-
-<style lang="scss">
-  .float-buttons {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    body.has-sidebar & .show-toc {
-      display: block;
-    }
-
-    body.is-scrolled & .back-to-top {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .back-to-top {
-      opacity: 0;
-      transform: translateX(100px);
-      transition: all 0.3s ease-in-out;
-    }
-  }
-
-  @media print {
-    .float-buttons {
-      display: none;
-    }
-  }
-</style>
