@@ -73,7 +73,7 @@ const getMargin = (depth: number) => {
           data-slug={heading.slug}
         >
           <a href={`#${heading.slug}`} class="flex items-center gap-1 w-full">
-            <div class="i-mingcute-add-circle-line group-[.active]:i-mingcute-check-circle-fill group-[.active-now]:i-mingcute-arrow-right-circle-fill" />
+            <div class="flex-shrink-0 i-mingcute-add-circle-line group-[.active]:i-mingcute-check-circle-fill group-[.active-now]:i-mingcute-arrow-right-circle-fill" />
             <span class={getMargin(heading.depth)}>{heading.text}</span>
           </a>
         </li>

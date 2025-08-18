@@ -33,31 +33,34 @@ const {
     <div class="app bg-surface text-content">
       <div class="flex justify-center max-md:flex-col">
         <Header class="flex-[0_0_auto]" />
-        <div
-          class="main-container md:flex-(grow-0 shrink basis-200) max-w-full overflow-x-hidden"
-        >
-          <main
-            class=`main-content relative min-h-screen p-4 md:pt-6 max-w-screen ${className}`
-            {...props}
-          >
-            <slot />
-          </main>
-          <Footer />
-        </div>
-        <div
-          class="sidebar-container flex-[0_0_auto] print:hidden!
-            max-md:hidden
-            max-md:show-toc:(block fixed bottom-2 w-full animate-(fade-in-up duration-300 ease-in-out))
-            md:(relative pt-6)"
-        >
-          <div
-            class="sticky top-6 bg-surface md:px-0 md:w-70 max-md:show-toc:(px-2 pt-4 border-(t base-300))"
-            un-overflow="y-auto x-visible"
-          >
-            <div class="min-w-50 md:w-fit xl:min-w-70">
-              <slot name="sidebar" />
+        <!-- 270 = 200 (main) + 70 (sidebar) -->
+        <div class="main-container flex-grow max-w-270">
+          <div class="main-and-sidebar flex xl:justify-center">
+            <main
+              class=`main-content md:flex-(grow-0 shrink basis-200) max-w-full overflow-x-hidden relative min-h-screen p-4 md:pt-6 ${className}`
+              {...props}
+            >
+              <slot />
+            </main>
+            <div
+              class="sidebar-container hidden print:hidden!
+              flex-(grow-0 shrink-0)
+              md:(block relative pt-6 has-sidebar:w-50)
+              lg:(flex-shrink-0 has-sidebar:5-70)
+              xl:w-70
+              max-md:show-toc:(block fixed bottom-2 w-full animate-(fade-in-up duration-300 ease-in-out))"
+            >
+              <div
+                class="sticky top-6 bg-surface md:px-0 max-md:show-toc:(px-2 pt-4 border-(t base-300))"
+                un-overflow="y-auto x-visible"
+              >
+                <div>
+                  <slot name="sidebar" />
+                </div>
+              </div>
             </div>
           </div>
+          <Footer />
         </div>
       </div>
       <FloatButtons />
