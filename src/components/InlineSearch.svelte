@@ -200,7 +200,7 @@
                 {/if}
               </div>
               {#if result.type === "post" || result.type === "page"}
-                <div class="result-content line-clamp-1">
+                <div class="result-content break-anywhere line-clamp-1">
                   {#if result.highlight}
                     {result.highlight[0]}<mark>{result.highlight[1]}</mark
                     >{result.highlight[2]}

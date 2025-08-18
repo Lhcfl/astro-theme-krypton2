@@ -1,8 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
 import type { RecursiveHeading } from "@/types/toc";
-import TocListRec from "@/components/TocListRec.astro";
-import { Icon } from "astro-icon/components";
 
 type Props = { data: MarkdownHeading[] };
 const { data } = Astro.props as Props;

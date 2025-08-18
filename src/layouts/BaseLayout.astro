@@ -33,9 +33,11 @@ const {
     <div class="app bg-surface text-content">
       <div class="flex justify-center max-md:flex-col">
         <Header class="flex-[0_0_auto]" />
-        <div class="main-container flex-grow-0 flex-shrink flex-basis-200">
+        <div
+          class="main-container md:flex-(grow-0 shrink basis-200) max-w-full overflow-x-hidden"
+        >
           <main
-            class=`main-content relative min-h-screen p-4 md:pt-6 ${className}`
+            class=`main-content relative min-h-screen p-4 md:pt-6 max-w-screen ${className}`
             {...props}
           >
             <slot />
