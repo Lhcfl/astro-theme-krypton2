@@ -31,22 +31,21 @@ for (const post of sortedPosts) {
     years.entries().map(([year, posts]) => (
       <section class="year-section">
         <div class="flex items-center gap-4">
-          <h2 class="year card-title my-2 text-2xl">{year}</h2>
-          <span class="badge badge-soft badge-info font-sans">
+          <h2 class="year my-2 text-2xl font-bold">{year}</h2>
+          <span class="badge badge-info font-sans text-sm">
             {posts.length} posts
           </span>
         </div>
-        <ul class="posts-list timeline timeline-vertical">
+        <ul class="posts-list">
           {posts.map((post, index) => (
-            <li class="timeline-line">
-              {index !== 0 && <hr />}
-              <div class="post-date timeline-start text-gray-500 text-sm">
+            <li class="one-post flex gap-2 md:gap-4 py-3 px-2 hover:bg-primary/10 transition">
+              <div class="post-date text-base-content/60 text-sm flex-[0_0_auto]">
                 <time datetime={post.data.date.toISOString()}>
                   {moment(post.data.date).format("MM-DD")}
                 </time>
               </div>
               <Clickable
-                class="post-box timeline-end w-full mt-2 p-2 hover:bg-primary/10 transition-all rounded-sm"
+                class="post-box w-full rounded-sm"
                 aria-label={`Read ${post.data.title || "this article"}`}
                 href={blogUrl(post)}
               >
@@ -59,12 +58,12 @@ for (const post of sortedPosts) {
                   {post.data.categories && (
                     <a
                       href={categoryUrl(post.data.categories)}
-                      class="category-item-simple hover:underline text-xs text-gray-500 flex items-center"
+                      class="category-item-simple hover:underline text-xs text-base-content/60 flex items-center"
                     >
                       {post.data.categories}
                     </a>
                   )}
-                  <span class="tags-list text-xs text-gray-500">
+                  <span class="tags-list text-xs text-base-content/60">
                     {post.data.tags?.map((tag) => (
                       <a
                         class="tag-item-simple hover:underline"
@@ -76,7 +75,6 @@ for (const post of sortedPosts) {
                   </span>
                 </p>
               </Clickable>
-              {index !== posts.length - 1 && <hr />}
             </li>
           ))}
         </ul>
@@ -84,24 +82,3 @@ for (const post of sortedPosts) {
     ))
   }
 </div>
-
-<style>
-  @reference "../styles/tailwind.css";
-
-  .posts-list.timeline > li {
-    --timeline-col-start: 5em;
-  }
-  @media screen and (max-width: 640px) {
-    .posts-list.timeline > li {
-      --timeline-col-start: 4em;
-    }
-  }
-
-  .timeline-line .post-date {
-    @apply transition-all;
-  }
-
-  .timeline-line:hover .post-date {
-    @apply text-primary;
-  }
-</style>
