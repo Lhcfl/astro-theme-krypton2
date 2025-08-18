@@ -58,7 +58,10 @@ const { class: className } = Astro.props;
       ))
     }
   </nav>
-  <div class="navbar-end">
+  <div
+    class="navbar-end"
+    un-md="flex-grow flex items-baseline-last justify-center"
+  >
     <DarkLightToggle client:load />
   </div>
 </header>
