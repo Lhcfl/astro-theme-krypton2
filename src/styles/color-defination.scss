@@ -1,4 +1,5 @@
-html[data-theme="dark"] {
+html[data-theme*="dark"] {
+
   .astro-code,
   .astro-code span {
     color: var(--shiki-dark) !important;
