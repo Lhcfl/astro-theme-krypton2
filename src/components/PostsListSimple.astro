@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import type { HTMLAttributes } from "astro/types";
 import type { CollectionEntry } from "astro:content";
 import moment from "moment";
@@ -32,7 +31,7 @@ for (const post of sortedPosts) {
       <section class="year-section">
         <div class="flex items-center gap-4">
           <h2 class="year my-2 text-2xl font-bold">{year}</h2>
-          <span class="badge badge-info font-sans text-sm">
+          <span class="badge badge-primary font-sans text-sm">
             {posts.length} posts
           </span>
         </div>

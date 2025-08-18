@@ -15,12 +15,12 @@ const { Content } = await render(note);
 <div class="note py-6 not-last:border-b border-base-content/20 rounded-none">
   <article class="text-sm md:text-base">
     <div class="note-meta flex items-center gap-2">
-      <div class="note-time badge badge-soft badge-info">
+      <div class="note-time badge badge-soft badge-primary">
         <FormattedDate date={note.data.date} />
       </div>
       {
         note.data.tags?.map((tag) => (
-          <span class="note-tag badge badge-soft badge-accent">
+          <span class="note-tag badge badge-soft badge-secondary">
             <Icon name="mingcute:tag-line" />
             {tag}
           </span>

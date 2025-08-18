@@ -155,8 +155,18 @@ body {
     }
 
     blockquote {
-      border-left: 2px solid var(--color-secondary);
+      @apply border-l-2 border-secondary;
       padding: 0 0 0 1em;
+
+      p,
+      span {
+        &:first-child::before {
+          content: "”";
+          transform: scale(2.4);
+          width: 0.7em;
+          @apply inline-block text-secondary;
+        }
+      }
     }
 
     &:not([lang])>*:not(pre) {
@@ -185,19 +195,12 @@ body {
     }
   }
 
-  // blockquote:not([lang="en"]) {
-  //   box-sizing: border-box;
-  //   margin: 1.6em 0 1.6em 0em;
-  //   padding: 0 0 0 1.6em;
-  //   border-left: var(--color-secondary) 0.3em solid;
-  // }
-
   code,
   tt {
     font-family: var(--mono-font-face);
     white-space: pre-wrap;
-    background-color: var(--color-base-200);
     padding: 2px 4px;
+    @apply text-sm bg-base-100;
   }
 
   pre {

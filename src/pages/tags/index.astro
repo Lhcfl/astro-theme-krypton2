@@ -52,14 +52,14 @@ const tagPostsSorted = tagsPosts
           href={tagUrl(tag)}
           aria-label={`View posts tagged with ${tag}`}
         >
-          <div class="flex items-center justify-between w-full mb-2">
+          <div class="flex items-center justify-between w-full mb-2 gap02">
             <h2 class="tag-title font-bold text-110% flex-shrink-1 flex-grow-1 truncate">
               <a href={tagUrl(tag)} class="flex items-center gap-1 truncate">
                 <Icon class="flex-shrink-0" name="mingcute:tag-line" />
                 <span class="truncate smooth-underline">{tag}</span>
               </a>
             </h2>
-            <span class="flex-shrink-0 badge badge-sm badge-soft badge-info font-sans">
+            <span class="flex-shrink-0 badge text-xs badge-primary font-sans">
               x {posts.length}
             </span>
           </div>

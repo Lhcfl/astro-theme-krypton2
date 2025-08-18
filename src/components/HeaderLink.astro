@@ -16,7 +16,7 @@ const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
   class:list={[
     "header-link flex items-center justify-center gap-1 transition",
     className,
-    { "text-primary": isActive },
+    { "text-primary+30": isActive },
   ]}
   aria-label={label}
   {...props}

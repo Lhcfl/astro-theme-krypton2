@@ -27,12 +27,8 @@ const notes = await Promise.all(
       ...note,
       Content,
     };
-  })
+  }),
 );
-
-const pages = [-2, -1, 0, 1, 2, 3, 4]
-  .map((d) => page.currentPage + d)
-  .filter((x) => x > 0 && x <= page.total);
 ---
 
 <CardLayout title="Notes" description="Miscellaneous thoughts">

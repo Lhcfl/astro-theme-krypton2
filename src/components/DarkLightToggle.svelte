@@ -1,10 +1,26 @@
 <script lang="ts">
   import { onMount } from "svelte";
   const currentTheme = () =>
+    document.documentElement.dataset.theme ||
     localStorage.getItem("theme") ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light");
+
+  const palettes = [
+    "light",
+    "dark",
+    "lightPurplePink",
+    "darkPurplePink",
+    "lightRedOrange",
+    "darkRedOrange",
+    "lightGreenBlue",
+    "darkGreenBlue",
+    "lightCyanYellow",
+    "darkCyanYellow",
+    "lightBrownGold",
+    "darkBrownGold",
+  ];
 
   let isDark = $state(false);
 
@@ -12,28 +28,23 @@
     isDark ? "i-mingcute:sun-line" : "i-mingcute:moon-stars-line",
   );
 
-  const setTheme = () => {
+  const setTheme = (next = true) => {
     const theme = currentTheme();
-    isDark = theme == "dark";
-    switch (theme) {
-      case "dark":
-        document.documentElement.dataset.theme = "dark";
-        break;
-      case "light":
-        document.documentElement.dataset.theme = "light";
-        break;
-    }
+    isDark = theme.startsWith("dark");
+    const idx = (palettes.indexOf(theme) + Number(next)) % palettes.length;
+    const newTheme = palettes[idx == -1 ? 0 : idx];
+    document.documentElement.dataset.theme = newTheme;
+    return newTheme;
   };
 
   onMount(() => {
-    setTheme();
-    document.addEventListener("astro:after-swap", setTheme);
+    setTheme(false);
+    document.addEventListener("astro:after-swap", () => setTheme(false));
   });
 
   const toggleTheme = () => {
-    const newTheme = currentTheme() === "dark" ? "light" : "dark";
+    const newTheme = setTheme();
     localStorage.setItem("theme", newTheme);
-    setTheme();
   };
 </script>
 
