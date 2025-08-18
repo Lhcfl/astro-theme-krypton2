@@ -68,65 +68,21 @@ const getMargin = (depth: number) => {
     {
       data.map((heading, idx) => (
         <li
-          class="toc-item flex items-center gap-2 transition text-base-content/60"
+          class="toc-item group flex items-center gap-2 transition"
+          un-text="base-content/60 [&.active]:secondary [&.active-now]:secondary+30"
           un-p="x-2 y-1"
           un-hover="bg-secondary/10 text-secondary"
           data-slug={heading.slug}
         >
-          <div class="timeline-middle">
-            <Icon name="mingcute:check-circle-fill" class="active-indicator" />
-            <Icon
-              name="mingcute:arrow-right-circle-fill"
-              class="active-now-indicator"
-            />
-            <Icon name="mingcute:add-circle-line" class="inactive-indicator" />
-          </div>
-          <div class="timeline-end">
-            <div class={getMargin(heading.depth)}>
-              <a href={`#${heading.slug}`}>{heading.text}</a>
-            </div>
-          </div>
+          <a href={`#${heading.slug}`} class="flex items-center gap-1 w-full">
+            <div class="i-mingcute-add-circle-line group-[.active]:i-mingcute-check-circle-fill group-[.active-now]:i-mingcute-arrow-right-circle-fill" />
+            <span class={getMargin(heading.depth)}>{heading.text}</span>
+          </a>
         </li>
       ))
     }
   </ul>
 </div>
-
-<style lang="scss">
-  li.toc-item {
-    --timeline-col-start: 1em;
-    .active-now-indicator,
-    .active-indicator {
-      display: none;
-    }
-  }
-  li.toc-item.active {
-    @apply text-secondary;
-    .active-indicator {
-      display: block;
-    }
-    .inactive-indicator {
-      display: none;
-    }
-
-    &:not(.active-now) hr {
-      @apply bg-secondary;
-    }
-
-    &.active-now {
-      @apply text-secondary+30;
-      .active-indicator {
-        display: none;
-      }
-      .active-now-indicator {
-        display: block;
-      }
-      .hr-begin {
-        @apply bg-secondary;
-      }
-    }
-  }
-</style>
 
 <script>
   import { useThrottledFn } from "@/utils/throttle";
@@ -139,12 +95,11 @@ const getMargin = (depth: number) => {
       return;
     }
     for (const li of lis) {
-      li.classList.add("active");
-      // console.log([li.dataset.slug, slug]);
       if (li.dataset.slug === slug) {
         li.classList.add("active-now");
         break;
       }
+      li.classList.add("active");
     }
   }
 
