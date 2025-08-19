@@ -39,15 +39,15 @@ const genTheme = (name: string, palette: Palette) => ({
     // 暗色主题
     [`dark${name}`]: {
         colors: {
-            "surface": "oklch(24% 0 0)",
-            "surface-100": "oklch(28% 0 0)",
+            "surface": "oklch(20% 0 0)",
+            "surface-100": "oklch(24% 0 0)",
 
             "content": "oklch(80% 0 0)",
 
             // 基础色 - 暗色模式反转亮度
-            'base-100': 'oklch(15% 0 0)',
-            'base-200': 'oklch(20% 0 0)',
-            'base-300': 'oklch(25% 0 0)',
+            'base-100': 'oklch(28% 0 0)',
+            'base-200': 'oklch(34% 0 0)',
+            'base-300': 'oklch(40% 0 0)',
             'base-content': 'oklch(90% 0 0)',
 
             ...palette,

@@ -208,6 +208,8 @@ body {
     padding: 10px 15px;
     font-family: var(--mono-font-face);
     line-height: 1.4em !important;
+    white-space: pre;
+    overflow-x: auto;
 
     @apply 'bg-base-100!';
 
@@ -218,6 +220,8 @@ body {
     code {
       padding: 0;
       background-color: transparent;
+      white-space: pre;
+      word-wrap: normal;
 
       span {
         text-decoration: none !important;
@@ -229,6 +233,30 @@ body {
       content: attr(data-language);
       right: 2em;
       opacity: 0.4;
+    }
+
+    /* 方案1：美化原生滚动条 */
+    &::-webkit-scrollbar {
+      height: 6px;
+      /* 更细的滚动条 */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      /* 透明轨道 */
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply bg-secondary/10 transition;
+      /* 半透明滑块 */
+      border-radius: 3px;
+      /* 平滑过渡 */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      @apply bg-secondary/50;
+      /* 悬停时更明显 */
     }
   }
 
