@@ -4,6 +4,8 @@ import CardLayout from "@/layouts/CardLayout.astro";
 ---
 
 <CardLayout title="Search" description="Search the blog posts">
-  <noscript>Please enable javascript</noscript>
-  <InlineSearch client:only />
+  <noscript>
+    <div>To use inline search, you should enable JavaScript.</div>
+  </noscript>
+  <InlineSearch client:load />
 </CardLayout>

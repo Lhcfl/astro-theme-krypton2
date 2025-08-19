@@ -195,8 +195,7 @@ const { uid } = Astro.props;
       padding-top: 0.5em;
     }
     .gt-popup {
-      @apply absolute right-0 top-4 bg-base-100 dropdown menu rounded-box shadow-sm z-20;
-      animation: fadeInDown 0.3s ease-in-out;
+      @apply absolute right-0 top-4 bg-base-100 dropdown menu rounded-box shadow-sm z-20 animate-fade-in-down animate-300 animate-ease-in-out;
       .gt-action {
         cursor: pointer;
         display: block;
