@@ -66,10 +66,15 @@ const {
               md:(block relative has-sidebar:w-50)
               lg:(flex-shrink-0 has-sidebar:w-70)
               xl:w-70
-              max-md:show-toc:(block fixed bottom-2 w-full max-w-full animate-(fade-in-up duration-300 ease-in-out))"
+              max-md:show-toc:(z-10 block fixed bottom-2 w-full max-w-full)
+              max-md:[body.show-toc_&]:animate-(fade-in-up duration-300 ease-in-out)
+              max-md:[body.removing-toc_&]:animate-(fade-out-down duration-300 ease-in-out)"
       >
         <div
-          class="sidebar__inner-container sticky top-0 bg-surface pt-6 md:px-0 max-md:show-toc:(px-2 pt-4 border-(t base-300)) md:h-screen overflow-(y-auto x-visible)"
+          class="sidebar__inner-container
+          sticky top-0 bg-surface pt-6
+          md:(px-0 h-screen)
+          max-md:show-toc:(px-2 pt-4 border-(t base-300)) overflow-(y-auto x-visible)"
         >
           {
             // sometimes we will pass a sidebar which is not important.

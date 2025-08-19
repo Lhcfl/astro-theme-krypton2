@@ -55,7 +55,7 @@ export default defineConfig({
       if (matcher.startsWith("show-toc:")) {
         return {
           matcher: matcher.slice("show-toc:".length),
-          selector: (c) => `body.show-toc ${c}`
+          selector: (c) => `body.show-toc ${c}, body.removing-toc ${c}`
         };
       }
       if (matcher.startsWith("has-sidebar:")) {

@@ -15,7 +15,7 @@
   </div>
   <div class="hidden has-sidebar:block md:hidden!">
     <button
-      onclick="document.body.classList.toggle('show-toc')"
+      onclick="document.body.classList.add('show-toc')"
       class="rounded-full p-4 text-lg md:text-xl bg-surface border-base-300 border"
       aria-label="Show TOC"
     >
@@ -31,5 +31,24 @@
     } else {
       document.body.classList.remove("is-scrolled");
     }
+  });
+  document.addEventListener("click", (ev) => {
+    if (!document.body.classList.contains("show-toc")) return;
+    let elem = ev.target as HTMLElement | null;
+    while (elem != null) {
+      if (elem.classList.contains("float-buttons")) {
+        return;
+      }
+      if (elem.classList.contains("sidebar__inner-container")) {
+        return;
+      }
+      elem = elem.parentElement;
+    }
+    document.body.classList.remove("show-toc");
+    document.body.classList.add("removing-toc");
+    setTimeout(() => {
+      document.body.classList.remove("removing-toc");
+    }, 280);
+    ev.stopPropagation();
   });
 </script>
