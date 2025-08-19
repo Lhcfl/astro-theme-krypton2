@@ -166,12 +166,27 @@
   </div>
 
   <div class="search-results-container mt-4">
-    {#if loading}
-      <div class="flex justify-center items-center h-30 w-full">
-        <div class="loading loading-dots loading-xl"></div>
-      </div>
-    {:else}
-      <div class="results-list flex flex-col gap-2">
+    <div class="results-list flex flex-col gap-2">
+      {#if loading}
+        {#each Array.from({ length: 10 })
+          .fill(0)
+          .map(() => Math.random() * 10 + 10) as i}
+          <div class="loading-item p-4 flex gap-4 animate-pulse">
+            <div class="icon-container text-xl">
+              <div class="i-mingcute:file-line"></div>
+            </div>
+            <div class="result-body w-full">
+              <div
+                class="loading-title h-4 bg-base-content/30 mb-2 rounded-lg"
+                style={`width: ${i}em`}
+              ></div>
+              <div
+                class="loading-content h-4 w-full bg-base-content/15 mb-2 rounded-lg"
+              ></div>
+            </div>
+          </div>
+        {/each}
+      {:else}
         {#each results.slice(0, SEARCH_RESULT_LIMIT) as result}
           <div class="result-item p-4 flex gap-4 hover:bg-primary/10 clickable">
             <a
@@ -212,7 +227,7 @@
             </div>
           </div>
         {/each}
-      </div>
-    {/if}
+      {/if}
+    </div>
   </div>
 </div>
