@@ -168,9 +168,8 @@
   <div class="search-results-container mt-4">
     <div class="results-list flex flex-col gap-2">
       {#if loading}
-        {#each Array.from({ length: 10 })
-          .fill(0)
-          .map(() => Math.random() * 10 + 10) as i}
+        <!-- just some random numbers here -->
+        {#each [20, 20, 12, 13, 10, 12, 19, 11, 18, 16] as i}
           <div class="loading-item p-4 flex gap-4 animate-pulse">
             <div class="icon-container text-xl">
               <div class="i-mingcute:file-line"></div>
