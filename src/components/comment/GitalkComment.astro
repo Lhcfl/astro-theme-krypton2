@@ -64,7 +64,7 @@ const { uid } = Astro.props;
         height: 100%;
       }
       svg {
-        fill: var(--color-base-content);
+        @apply fill-base-content;
       }
     }
     .gt-spinner {
@@ -127,7 +127,7 @@ const { uid } = Astro.props;
       vertical-align: top;
     }
     .gt-btn {
-      @apply btn btn-sm btn-primary font-sans;
+      @apply font-sans text-sm border border-primary/20 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition duration-200 py-1 px-2;
     }
     .gt-btn-login {
       margin-right: 0;
@@ -257,17 +257,17 @@ const { uid } = Astro.props;
       width: 4em;
     }
     .gt-comment-username {
+      @apply text-base-content/60 hover:text-base-content/80 text-sm font-sans;
       font-weight: 500;
       text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
     }
     .gt-comment-text {
+      @apply text-sm text-base-content/50;
       margin-left: 0.5em;
     }
     .gt-comment-date {
       margin-left: 0.5em;
+      @apply text-sm text-base-content/50;
     }
     .gt-comment-like {
       top: 0;
