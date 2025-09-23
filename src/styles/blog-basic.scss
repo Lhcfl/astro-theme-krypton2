@@ -25,7 +25,7 @@
 }
 
 html {
-  font-size: 15px;
+  font-size: 16px;
   scroll-behavior: smooth;
 }
 
@@ -37,10 +37,6 @@ body {
 .markdown-body {
   word-break: break-word;
   overflow-wrap: break-word;
-
-  &.is-detailed {
-    font-size: 15px;
-  }
 
   a {
     @apply text-primary+30;
