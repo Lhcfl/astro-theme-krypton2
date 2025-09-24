@@ -18,5 +18,9 @@ const sortedPosts = sort
 ---
 
 <div class={`posts-list flex flex-col ${className}`} {...props}>
-  {sortedPosts.map((post) => <PostCard post={post} />)}
+  {
+    sortedPosts.map((post) => (
+      <PostCard post={post} class:list={[post.data.hidden ? "hidden" : ""]} />
+    ))
+  }
 </div>
